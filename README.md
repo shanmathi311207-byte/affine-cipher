@@ -1,114 +1,95 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Affine Cipher Web Tool</title>
-    <style>
-        body {
-            font-family: Arial;
-            text-align: center;
-            margin-top: 50px;
-            background-color: #f4f4f4;
-        }
-        input, button {
-            padding: 8px;
-            margin: 5px;
-        }
-        .box {
-            background: white;
-            padding: 20px;
-            display: inline-block;
-            border-radius: 10px;
-            box-shadow: 0 0 10px gray;
-        }
-    </style>
+    <title>Shan☀️ Affine Cipher Tool</title>
 </head>
 <body>
 
-<div class="box">
-    <h2>Affine Cipher Encryption Tool</h2>
+<h1>🔐 Shan☀️ Affine Cipher Tool</h1>
 
-    <input type="text" id="message" placeholder="Enter Message"><br>
-    <input type="number" id="a" placeholder="Enter value of a">
-    <input type="number" id="b" placeholder="Enter value of b"><br>
+<label>Enter Text:</label><br>
+<input type="text" id="text"><br><br>
 
-    <button onclick="encrypt()">Encrypt</button>
-    <button onclick="decrypt()">Decrypt</button>
+<label>Key a (coprime with 26):</label><br>
+<input type="number" id="keyA"><br><br>
 
-    <h3 id="result"></h3>
-</div>
+<label>Key b:</label><br>
+<input type="number" id="keyB"><br><br>
+
+<button onclick="encrypt()">Encrypt</button>
+<button onclick="decrypt()">Decrypt</button>
+
+<h3>Result:</h3>
+<p id="result"></p>
 
 <script>
 
-function gcd(a, b) {
-    while (b != 0) {
-        let temp = b;
-        b = a % b;
-        a = temp;
+function gcd(a,b){
+    while(b!=0){
+        let t=b;
+        b=a%b;
+        a=t;
     }
     return a;
 }
 
-function modInverse(a, m) {
-    for (let x = 1; x < m; x++) {
-        if ((a * x) % m == 1) {
-            return x;
-        }
+function modInverse(a, m){
+    a = a % m;
+    for(let x=1; x<m; x++){
+        if((a*x)%m==1) return x;
     }
-    return null;
 }
 
-function encrypt() {
-    let text = document.getElementById("message").value.toUpperCase();
-    let a = parseInt(document.getElementById("a").value);
-    let b = parseInt(document.getElementById("b").value);
+function encrypt(){
+    let text = document.getElementById("text").value.toUpperCase();
+    let a = parseInt(document.getElementById("keyA").value);
+    let b = parseInt(document.getElementById("keyB").value);
+    let result = "";
 
-    if (gcd(a, 26) != 1) {
-        alert("Value of 'a' must be coprime with 26!");
+    if(gcd(a,26)!=1){
+        alert("Key 'a' must be coprime with 26!");
         return;
     }
 
-    let result = "";
-
-    for (let i = 0; i < text.length; i++) {
+    for(let i=0;i<text.length;i++){
         let char = text[i];
-        if (char >= 'A' && char <= 'Z') {
+        if(char.match(/[A-Z]/)){
             let x = char.charCodeAt(0) - 65;
-            let encrypted = (a * x + b) % 26;
+            let encrypted = (a*x + b) % 26;
             result += String.fromCharCode(encrypted + 65);
         } else {
             result += char;
         }
     }
 
-    document.getElementById("result").innerText = "Encrypted: " + result;
+    document.getElementById("result").innerText = result;
 }
 
-function decrypt() {
-    let text = document.getElementById("message").value.toUpperCase();
-    let a = parseInt(document.getElementById("a").value);
-    let b = parseInt(document.getElementById("b").value);
+function decrypt(){
+    let text = document.getElementById("text").value.toUpperCase();
+    let a = parseInt(document.getElementById("keyA").value);
+    let b = parseInt(document.getElementById("keyB").value);
+    let result = "";
 
-    let a_inv = modInverse(a, 26);
-
-    if (a_inv == null) {
-        alert("Invalid 'a' value!");
+    if(gcd(a,26)!=1){
+        alert("Key 'a' must be coprime with 26!");
         return;
     }
 
-    let result = "";
+    let a_inv = modInverse(a,26);
 
-    for (let i = 0; i < text.length; i++) {
+    for(let i=0;i<text.length;i++){
         let char = text[i];
-        if (char >= 'A' && char <= 'Z') {
-            let x = char.charCodeAt(0) - 65;
-            let decrypted = (a_inv * (x - b + 26)) % 26;
+        if(char.match(/[A-Z]/)){
+            let y = char.charCodeAt(0) - 65;
+            let decrypted = (a_inv*(y-b+26))%26;
             result += String.fromCharCode(decrypted + 65);
         } else {
             result += char;
         }
     }
 
-    document.getElementById("result").innerText = "Decrypted: " + result;
+    document.getElementById("result").innerText = result;
 }
 
 </script>

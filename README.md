@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Shan☀️ Affine Cipher Tool</title>
+    <title> Crypto Tool</title>
 </head>
 <body>
 
-<h1>🔐 Shan☀️ Affine Cipher Tool</h1>
+<h1> Affine Cipher Tool</h1>
 
 <label>Enter Text:</label><br>
 <input type="text" id="text"><br><br>
